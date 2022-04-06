@@ -14,7 +14,7 @@ import java.util.Date;
 public class JwtService {
     public static final String USERNAME = "username";
     public static String SECRET_KEY = "11111111111111111111111111111111";
-    public static int EXPIRE_TIME = 3600;
+    public static int EXPIRE_TIME = 36000000;
 
     public String generateTokenLogin(String username) throws JOSEException {
         String token = null;
@@ -45,34 +45,49 @@ public class JwtService {
         return sharedSecret;
     }
 
-    public String getUsernameFromToken(String token) throws ParseException, JOSEException {
+    public String getUsernameFromToken(String token) {
         String username = null;
-        JWTClaimsSet claims = getClaimSFromToken(token);
-        username = claims.getStringClaim(USERNAME);
+        try {
+            JWTClaimsSet claims = getClaimSFromToken(token);
+            username = claims.getStringClaim(USERNAME);
+        } catch (Exception e) {
+            System.out.println("bug function getUsernameFromToken: " + e.getMessage());
+        }
+
         return username;
     }
 
-    private JWTClaimsSet getClaimSFromToken(String token) throws ParseException, JOSEException {
+    private JWTClaimsSet getClaimSFromToken(String token) {
         JWTClaimsSet claims = null;
-        SignedJWT signedJWT = SignedJWT.parse(token);
-        JWSVerifier verifier = new MACVerifier(generateShareSecret());
-        if (signedJWT.verify(verifier)) {
-            claims = signedJWT.getJWTClaimsSet();
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(token);
+            JWSVerifier verifier = new MACVerifier(generateShareSecret());
+            if (signedJWT.verify(verifier)) {
+                claims = signedJWT.getJWTClaimsSet();
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
+
         return claims;
     }
 
-    private Boolean validateTokenLogin(String token) throws ParseException, JOSEException {
-        if (token == null || token.trim().length() == 0) {
-            return false;
+    public Boolean validateTokenLogin(String token) {
+        try {
+            if (token == null || token.trim().length() == 0) {
+                return false;
+            }
+            String username = getUsernameFromToken(token);
+            if (username == null || username.isEmpty()) {
+                return false;
+            }
+            if (isTokenExpired(token)) {
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("Bug: " + e.getMessage());
         }
-        String username = getUsernameFromToken(token);
-        if (username == null || username.isEmpty()) {
-            return false;
-        }
-        if (isTokenExpired(token)) {
-            return false;
-        }
+
         return true;
     }
 
