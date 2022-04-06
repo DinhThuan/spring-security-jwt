@@ -9,10 +9,10 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @EnableConfigurationProperties({
         FileStorageProperties.class
 })
-public class SpringCrudPhraseApplication {
+public class SpringSecurityJwtApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringCrudPhraseApplication.class, args);
+        SpringApplication.run(SpringSecurityJwtApplication.class, args);
     }
 
 }
