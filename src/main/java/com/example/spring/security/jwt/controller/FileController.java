@@ -1,12 +1,15 @@
 package com.example.spring.security.jwt.controller;
 
+import com.example.spring.security.jwt.entities.Abc;
 import com.example.spring.security.jwt.entities.UploadFileResponse;
+import com.example.spring.security.jwt.repository.AbcRepository;
 import com.example.spring.security.jwt.service.FileStorageService;
 import com.example.spring.security.jwt.service.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -28,6 +32,13 @@ public class FileController {
     JwtService jwtService;
     @Autowired
     private FileStorageService fileStorageService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    @Autowired
+    private AbcRepository abcRepository;
+
 
     @PostMapping("uploadFile")
     public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
@@ -49,12 +60,17 @@ public class FileController {
 
     @GetMapping("/downloadFile/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
+        UUID.randomUUID();
+//        redisTemplate.opsForValue().set("token", token);
+        abcRepository.save(new Abc(1, "ABC"));
+        String token = null;
         try {
-            String token = jwtService.generateTokenLogin("dinhthuanvan");
+            token = jwtService.generateTokenLogin("dinhthuanvan");
             String username = jwtService.getUsernameFromToken(token);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
         // Load file as Resource
         Resource resource = fileStorageService.loadFileAsResource(fileName);
 
