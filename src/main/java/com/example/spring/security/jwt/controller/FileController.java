@@ -63,13 +63,13 @@ public class FileController {
         UUID.randomUUID();
 //        redisTemplate.opsForValue().set("token", token);
         abcRepository.save(new Abc(1, "ABC"));
-        String token = null;
-        try {
-            token = jwtService.generateTokenLogin("dinhthuanvan");
-            String username = jwtService.getUsernameFromToken(token);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+//        String token = null;
+//        try {
+//            token = jwtService.generateTokenLogin("dinhthuanvan");
+//            String username = jwtService.getUsernameFromToken(token);
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//        }
 
         // Load file as Resource
         Resource resource = fileStorageService.loadFileAsResource(fileName);

@@ -46,6 +46,6 @@ public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthentication
             }
         }
 
-        super.doFilter(request, response, chain);
+        chain.doFilter(request, response);
     }
 }
