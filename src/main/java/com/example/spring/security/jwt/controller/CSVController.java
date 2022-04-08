@@ -18,7 +18,7 @@ import org.springframework.core.io.Resource;
 
 import java.util.List;
 
-@CrossOrigin("http://localhost:8080")
+//@CrossOrigin("http://localhost:8080")
 @Controller
 @RequestMapping("/api/v1/")
 public class CSVController {
