@@ -19,6 +19,15 @@ public class AuthenticationService {
         userList.add(new UserLogin(3, "all", "123456", new String[]{"ROLE_ALL"}));
     }
 
+    public String[] getRoleByUser(UserLogin userLogin) {
+        for (UserLogin user : userList) {
+            if (userLogin.getUsername().equals(userLogin.getUsername())) {
+                return user.getRoles();
+            }
+        }
+        return null;
+    }
+
     public boolean checkLogin(UserLogin user) {
         for (UserLogin userExist : userList) {
             if (StringUtils.equals(user.getUsername(), userExist.getUsername()) && StringUtils.equals(user.getPassword(), userExist.getPassword())) {
