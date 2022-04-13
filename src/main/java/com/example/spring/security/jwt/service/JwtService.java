@@ -14,7 +14,7 @@ import java.util.Date;
 public class JwtService {
     public static final String USERNAME = "username";
     public static String SECRET_KEY = "11111111111111111111111111111111";
-    public static int EXPIRE_TIME = 36000000;
+    public static int EXPIRE_TIME = 10000;
 
     public String generateTokenLogin(String username) throws JOSEException {
         String token = null;
@@ -93,10 +93,11 @@ public class JwtService {
 
     private boolean isTokenExpired(String token) throws ParseException, JOSEException {
         Date expiration = getExpirationDateFromToken(token);
+        System.out.println("Token is expired");
         return expiration.before(new Date());
     }
 
-    private Date getExpirationDateFromToken(String token) throws ParseException, JOSEException {
+    public Date getExpirationDateFromToken(String token) throws ParseException, JOSEException {
         Date expiration = null;
         JWTClaimsSet claims = getClaimSFromToken(token);
         expiration = claims.getExpirationTime();

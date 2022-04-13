@@ -15,6 +15,7 @@ public final class RestAuthenticationEntryPoint implements AuthenticationEntryPo
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 //        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().write("khong co token or token error - ");
         response.getWriter().write("Unauthorized Error");
     }
 }
