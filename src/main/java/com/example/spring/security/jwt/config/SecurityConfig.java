@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -16,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled=true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter() throws Exception {
@@ -45,7 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         /*Disable crsf cho đường dẫn /api/v1/ */
         http.csrf().ignoringAntMatchers("/api/v1/**");
 
-        http.authorizeRequests().antMatchers("/api/v1/auth/login**").permitAll().anyRequest().authenticated();
+//        http.authorizeRequests().antMatchers("/api/v1/auth/login**").permitAll().anyRequest().authenticated();
+        http.authorizeRequests().antMatchers("/api/v1/auth/login**").permitAll();
         //xử lý những request chưa được xác thực.
         http.antMatcher("/api/v1/**").httpBasic().authenticationEntryPoint(restServicesEntryPoint())
                 .and()
@@ -58,6 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .and()
 //                .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
 //                .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());
+//        http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/api/v1/**").hasRole("ADMIN");
+        http.authorizeRequests().anyRequest().authenticated();
         /*sẽ thực hiện việc xác thực người dùng*/
         http.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         /*trường hợp người dùng gửi request mà không có quyền sẽ do bean customAccessDeniedHandlerxử lý (Ví dụ role USER nhưng gửi request xóa user)*/

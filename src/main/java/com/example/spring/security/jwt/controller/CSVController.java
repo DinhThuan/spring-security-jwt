@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -71,5 +72,12 @@ public class CSVController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
                 .contentType(MediaType.parseMediaType("application/csv"))
                 .body(file);
+    }
+
+    //    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @DeleteMapping("csv/delete/record")
+    public ResponseEntity<String> deleteFileById(@RequestBody DeveloperTutorial developerTutorial) {
+        fileService.deleteFileCsvById(developerTutorial);
+        return new ResponseEntity<String>("deleted", HttpStatus.OK);
     }
 }

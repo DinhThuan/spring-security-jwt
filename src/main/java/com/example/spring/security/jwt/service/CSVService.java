@@ -34,4 +34,8 @@ public class CSVService {
     public List<DeveloperTutorial> getAllTutorials() {
         return repository.findAll();
     }
+
+    public void deleteFileCsvById(DeveloperTutorial developerTutorial) {
+        repository.delete(developerTutorial);
+    }
 }

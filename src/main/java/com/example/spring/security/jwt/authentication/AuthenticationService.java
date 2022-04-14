@@ -13,7 +13,7 @@ public class AuthenticationService {
 
     static {
         userList.add(new UserLogin(1, "admin", "123456"));
-        userList.get(0).setRoles(new String[]{"ROLE_ADMIN"});
+        userList.get(0).setRoles(new String[]{"ROLE_ABC"});
         userList.add(new UserLogin(2, "user", "123456"));
         userList.get(1).setRoles(new String[]{"ROLE_USER"});
         userList.add(new UserLogin(3, "all", "123456", new String[]{"ROLE_ALL"}));
